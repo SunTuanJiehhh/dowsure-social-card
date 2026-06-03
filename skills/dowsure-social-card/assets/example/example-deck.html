@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="indigo-porcelain">
+<head>
+  <meta charset="utf-8">
+  <title>DowInsights · 硅谷在抢一种工程师 (FDE) · 小红书卡片组</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <style>
+    /* Editorial Magazine × E-ink — FDE × DowInsights deck (13 cards, 3:4) */
+
+    /* ---------- 1. Theme tokens ---------- */
+    :root,
+    [data-theme="ink-classic"] {
+      --paper:     #f3f0e8;
+      --paper-2:   #ebe6da;
+      --ink:       #0a0a0b;
+      --muted:     #68625a;
+      --line:      rgba(10,10,11,.22);
+      --accent:    #111111;
+      --accent-soft: #d8d2c6;
+      --ink-rgb: 10,10,11;
+      --paper-rgb: 243,240,232;
+      --accent-rgb: 17,17,17;
+    }
+    [data-theme="indigo-porcelain"] {
+      --paper:     #f2f4f5;
+      --paper-2:   #e5ebef;
+      --ink:       #0a1f3d;
+      --muted:     #5f6d78;
+      --line:      rgba(10,31,61,.20);
+      --accent:    #315d93;
+      --accent-soft: #d7e1ec;
+      --ink-rgb: 10,31,61;
+      --paper-rgb: 242,244,245;
+      --accent-rgb: 49,93,147;
+    }
+
+    /* ---------- 2. Typography stack ---------- */
+    :root {
+      --serif-zh: "Noto Serif SC", "Songti SC", "STSong", serif;
+      --serif-en: "Playfair Display", "Noto Serif SC", serif;
+      --sans-zh: "Noto Sans SC", -apple-system, "PingFang SC", "Microsoft YaHei UI", sans-serif;
+      --sans-en: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono:    "IBM Plex Mono", ui-monospace, "SF Mono", Consolas, monospace;
+    }
+
+    /* ---------- 3. Reset & sheet ---------- */
+    *,*::before,*::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: #1a1a1a;
+      font-family: var(--sans-zh);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding: 64px 32px;
+    }
+    .sheet { display: flex; flex-direction: column; align-items: center; gap: 48px; }
+
+    /* ---------- 4. Poster boards ---------- */
+    .poster {
+      position: relative;
+      background: var(--paper);
+      color: var(--ink);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .poster.xhs    { width: 1080px; height: 1440px; }
+    .poster figure { margin: 0; }
+    .poster.xhs    .content { padding: 96px 88px; }
+    .content { position: relative; width: 100%; height: 100%; z-index: 2; }
+
+    /* ---------- 5. Background layers (pure CSS, no WebGL) ---------- */
+    .grain {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      opacity: .12; mix-blend-mode: multiply;
+      background-image: radial-gradient(rgba(0,0,0,.03) 1px, transparent 1px);
+      background-size: 4px 4px;
+    }
+    .atmo {
+      position:absolute; inset:0; z-index:1; pointer-events:none;
+      background:
+        radial-gradient(115% 75% at 88% 6%, rgba(var(--accent-rgb),.07), transparent 56%),
+        radial-gradient(95% 70% at 6% 102%, rgba(var(--ink-rgb),.04), transparent 62%);
+    }
+    .hero .atmo {
+      background:
+        radial-gradient(100% 62% at 86% 8%, rgba(var(--accent-rgb),.13), transparent 58%),
+        radial-gradient(92% 72% at 8% 98%, rgba(var(--ink-rgb),.06), transparent 64%);
+    }
+
+    /* ---------- 6. Typography roles ---------- */
+    .kicker { font-family: var(--mono); font-size: 21px; letter-spacing: .22em; text-transform: uppercase; color: rgba(var(--ink-rgb), .55); margin: 0 0 18px; }
+    .h-display { font-family: var(--serif-zh); font-weight: 500; font-size: 124px; line-height: 1.06; letter-spacing: .04em; margin: 0 0 24px; color: var(--ink); }
+    .h-xl { font-family: var(--serif-zh); font-weight: 500; font-size: 88px; line-height: 1.10; letter-spacing: .03em; margin: 0 0 24px; color: var(--ink); }
+    .h-md { font-family: var(--serif-zh); font-weight: 500; font-size: 56px; line-height: 1.18; letter-spacing: .02em; margin: 0 0 18px; color: var(--ink); }
+    .h-sub { font-family: var(--serif-en); font-style: italic; font-weight: 400; font-size: 36px; color: var(--muted); margin: 0 0 24px; }
+    .lead { font-family: var(--serif-zh); font-weight: 400; font-size: 28px; line-height: 1.55; color: rgba(var(--ink-rgb), .82); margin: 0 0 24px; }
+    .body { font-family: var(--serif-zh); font-weight: 400; font-size: 24px; line-height: 1.65; color: rgba(var(--ink-rgb), .80); margin: 0 0 18px; }
+    .meta { font-family: var(--mono); font-size: 18px; letter-spacing: .20em; text-transform: uppercase; color: rgba(var(--ink-rgb), .55); }
+    .label { font-family: var(--mono); font-size: 18px; letter-spacing: .20em; text-transform: uppercase; color: rgba(var(--ink-rgb), .55); }
+    .pullquote { font-family: var(--serif-zh); font-style: italic; font-weight: 500; font-size: 64px; line-height: 1.28; color: var(--ink); margin: 0; }
+
+    /* ---------- 7. Issue label ---------- */
+    .issue-row { display: flex; align-items: center; gap: 16px; font-family: var(--mono); font-size: 20px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .issue-row .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+    /* ---------- 8. Layout primitives ---------- */
+    .stack { display: flex; flex-direction: column; }
+    .gap-1 { gap: 12px; } .gap-2 { gap: 24px; } .gap-3 { gap: 36px; } .gap-4 { gap: 48px; } .gap-5 { gap: 64px; }
+    .row { display: flex; flex-direction: row; }
+    .col-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+    .col-2-7-5 { display: grid; grid-template-columns: 7fr 5fr; gap: 48px; }
+    .center { text-align: center; }
+    .grow { flex: 1; }
+    .rule { height: 1px; background: var(--line); border: 0; margin: 24px 0; }
+    .rule-accent { height: 2px; background: var(--accent); border: 0; margin: 24px 0; width: 96px; }
+
+    /* ---------- 9. Image containers ---------- */
+    .frame-img { position: relative; overflow: hidden; background: var(--paper-2); display: block; margin: 0; }
+    .frame-img img { width: 100%; height: 100%; object-fit: cover; object-position: center 50%; display: block; }
+    .frame-img.fit-contain img { object-fit: contain; }
+    .frame-img.r-3x4 { aspect-ratio: 3 / 4; } .frame-img.r-1x1 { aspect-ratio: 1 / 1; } .frame-img.r-4x3 { aspect-ratio: 4 / 3; }
+    .frame-img.r-16x9 { aspect-ratio: 16 / 9; } .frame-img.r-16x10 { aspect-ratio: 16 / 10; } .frame-img.r-3x2 { aspect-ratio: 3 / 2; }
+    .img-cap { font-family: var(--mono); font-size: 20px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: 14px; }
+
+    /* ---------- 9b. Screenshot treatment (.frame-shot) ---------- */
+    .frame-shot { position: relative; overflow: hidden; display: block; margin: 0; background: var(--paper-2); border-radius: 6px; }
+    .frame-shot.corners-sq { border-radius: 0; } .frame-shot.corners-sm { border-radius: 6px; } .frame-shot.corners-md { border-radius: 14px; }
+    .frame-shot.shadow-soft { box-shadow: 0 18px 36px -18px rgba(20,18,14,.22), 0 2px 6px rgba(20,18,14,.06); }
+    .frame-shot.shadow-ed { box-shadow: 0 28px 60px -24px rgba(20,18,14,.32), 0 6px 14px rgba(20,18,14,.08); }
+    .frame-shot.bg-paper { background: var(--paper); } .frame-shot.bg-paper-2 { background: var(--paper-2); } .frame-shot.bg-ink { background: var(--ink); }
+    .frame-shot.inset-none > img { padding: 0; }
+    .frame-shot.inset-sub { padding: 24px; }
+    .frame-shot.inset-bal { padding: 56px; }
+    .frame-shot.r-3x4 { aspect-ratio: 3 / 4; } .frame-shot.r-1x1 { aspect-ratio: 1 / 1; } .frame-shot.r-4x3 { aspect-ratio: 4 / 3; }
+    .frame-shot.r-16x9 { aspect-ratio: 16 / 9; } .frame-shot.r-16x10 { aspect-ratio: 16 / 10; } .frame-shot.r-3x2 { aspect-ratio: 3 / 2; }
+    .frame-shot > img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; border-radius: inherit; }
+    .frame-shot.fit-cover > img { object-fit: cover; }
+
+    /* ---------- 10. Editorial components ---------- */
+    .ledger { display: flex; flex-direction: column; }
+    .ledger-row { display: grid; grid-template-columns: 96px 1fr auto; gap: 24px; align-items: baseline; padding: 28px 0; border-bottom: 1px solid var(--line); }
+    .ledger-row .ledger-nb { font-family: var(--mono); font-size: 28px; color: var(--accent); letter-spacing: .08em; }
+    .ledger-row .ledger-title { font-family: var(--serif-zh); font-weight: 500; font-size: 42px; letter-spacing: .02em; color: var(--ink); }
+    .ledger-row .ledger-note { font-family: var(--serif-zh); font-weight: 400; font-size: 22px; line-height: 1.55; color: rgba(var(--ink-rgb), .72); }
+    .marginalia { display: grid; grid-template-columns: 1fr 220px; gap: 48px; }
+    .marginalia .mg-col { border-left: 1px solid var(--line); padding-left: 24px; }
+    .marginalia .mg-col p { font-family: var(--mono); font-size: 20px; letter-spacing: .04em; color: var(--muted); margin: 0 0 16px; line-height: 1.5; }
+    .marginalia .mg-col p .tag { color: var(--accent); }
+
+    /* ---------- 11. Corner metadata ---------- */
+    .poster .corner-tl, .poster .corner-tr, .poster .corner-bl, .poster .corner-br { position: absolute; font-family: var(--mono); font-size: 18px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); z-index: 3; }
+
+    /* =========================================================
+       Task-scoped: FDE × DowInsights deck
+       ========================================================= */
+    .poster .body { font-size: 26px; line-height: 1.66; }
+    .poster .lead { font-size: 30px; line-height: 1.56; }
+
+    .deck-foot {
+      display: flex; flex-wrap: wrap; gap: 14px 32px;
+      justify-content: space-between; align-items: center;
+      font-family: var(--mono); font-size: 18px; letter-spacing: .13em;
+      text-transform: uppercase; color: var(--muted);
+      border-top: 1px solid var(--line); padding-top: 20px;
+    }
+    .deck-foot span { white-space: nowrap; }
+    .deck-foot .lead-seg { color: var(--accent); }
+
+    .cover-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+    .cover-stats .n { font-family: var(--serif-zh); font-weight: 500; font-size: 66px; line-height: 1; color: var(--accent); }
+    .cover-stats .l { font-family: var(--mono); font-size: 18px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); margin-top: 12px; line-height: 1.3; }
+
+    .bignum-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; align-items: end; }
+    .bignum .n { font-family: var(--serif-zh); font-weight: 500; font-size: 134px; line-height: .9; color: var(--accent); }
+    .bignum .n .pct { font-size: .42em; letter-spacing: 0; }
+    .bignum .t { font-family: var(--sans-zh); font-size: 23px; line-height: 1.5; color: rgba(var(--ink-rgb), .80); margin-top: 22px; }
+
+    .kv-row { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 44px; }
+    .kv .k { font-family: var(--serif-zh); font-weight: 500; font-size: 58px; line-height: 1; color: var(--accent); }
+    .kv .v { font-family: var(--sans-zh); font-size: 22px; line-height: 1.35; color: var(--muted); margin-top: 10px; }
+
+    .closing-line { margin: 0; font-family: var(--serif-zh); font-style: italic; font-weight: 500; font-size: 42px; line-height: 1.42; color: var(--ink); border-left: 16px solid var(--accent); padding-left: 28px; }
+
+    /* ===== Dowsure brand override ===== */
+    [data-theme="indigo-porcelain"]{
+      --paper:       #ffffff;   /* 白底,更干净 */
+      --paper-2:     #f1f4f6;    /* 极浅灰,仅图片面板用 */
+      --ink:         #15171c;
+      --muted:       #5f6571;
+      --line:        rgba(21,23,28,.20);
+      --accent:      #F40064;
+      --accent-soft: #f7c9da;
+      --ink-rgb:     21,23,28;
+      --accent-rgb:  244,0,100;
+    }
+    .h-display, .h-xl, .pullquote { color: var(--accent); }   /* 大标题全部用品牌粉色 */
+    .brandlogo { display:block; height:42px; width:auto; }
+    .deck-foot .brandlogo { height:28px; }
+    .cover-top { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; }
+
+    /* ===== Image evidence ===== */
+    .shot-cap { font-family:var(--mono); font-size:18px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-top:12px; }
+    .shot-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+    .shot-grid .shot-cap { font-size:15px; letter-spacing:.04em; margin-top:8px; }
+    figure.shot { margin:0; }
+
+    /* ===== Two-column compare ===== */
+    .compare { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+    .compare .col { border-top:2px solid var(--accent); padding-top:16px; }
+    .compare .col.muted { border-top-color:var(--line); }
+    .compare .ttl { font-family:var(--mono); font-size:18px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+    .compare .col.muted .ttl { color:var(--muted); }
+    .compare .desc { font-family:var(--serif-zh); font-size:25px; line-height:1.5; color:rgba(var(--ink-rgb),.86); }
+
+    /* ===== Tag chips + inline quote ===== */
+    .tag-list { display:flex; flex-wrap:wrap; gap:12px; }
+    .tag-list .t { font-family:var(--mono); font-size:19px; letter-spacing:.03em; color:var(--ink); border:1px solid var(--line); padding:9px 15px; white-space:nowrap; }
+    .q-line { font-family:var(--serif-en); font-style:italic; font-size:30px; line-height:1.42; color:var(--ink); }
+    .q-src { font-family:var(--mono); font-size:18px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:10px; }
+
+    /* ===== Dev/Delta duo blocks ===== */
+    .duo { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+    .duo .blk { background:var(--paper-2); border-left:3px solid var(--accent); padding:24px 26px; }
+    .duo .blk .lab { font-family:var(--mono); font-size:19px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+    .duo .blk .txt { font-family:var(--serif-zh); font-size:25px; line-height:1.45; color:var(--ink); }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+
+    <!-- DECK_POSTERS -->
+    <!-- 01 · Cover -->
+    <section class="poster xhs hero" id="xhs-01-cover">
+      <div class="atmo"></div><div class="grain"></div>
+      <div class="content stack" style="justify-content:space-between">
+        <div class="cover-top">
+          <div class="issue-row"><span>DowInsights</span></div>
+          <img class="brandlogo" src="assets/dowsure-logo.svg" alt="Dowsure 豆沙包">
+        </div>
+        <div class="stack gap-2">
+          <p class="kicker">Forward Deployed Engineer</p>
+          <h1 class="h-display" style="font-size:106px">硅谷在抢<br>一种工程师</h1>
+          <p class="h-sub">The most-wanted engineer in tech, 2026.</p>
+        </div>
+        <p class="lead">连 OpenAI 都成立新公司、砸 10 亿美元，只为招 150 个“不写模型”的工程师。<br>跨境电商，也快需要了。</p>
+        <div class="cover-stats">
+          <div class="s"><div class="n">+729%</div><div class="l">FDE 招聘增长 · Indeed</div></div>
+          <div class="s"><div class="n">$1B</div><div class="l">OpenAI 新部署公司</div></div>
+          <div class="s"><div class="n">150</div><div class="l">首批工程师岗位</div></div>
+        </div>
+        <div class="deck-foot">
+          <span>01 / 13</span><span class="lead-seg">解构 Forward Deployed Engineer</span><span>Dowsure 豆沙包</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 · 硅谷的怪事 (3 screenshots) -->
+    <section class="poster xhs" id="xhs-02-surge">
+      <div class="atmo"></div><div class="grain"></div>
+      <div class="content stack gap-3" style="justify-content:space-between">
+        <div class="stack gap-1">
+          <p class="kicker">01 · 硅谷 5 月的怪事</p>
+          <h2 class="h-xl">全行业，<br>同时在抢人</h2>
+        </div>
+        <p class="lead">OpenAI 斥资 10 亿美元成立 Deployment Company，只为招 150 个“不写模型”的工程师；Anthropic 把 Applied AI 团队 5 倍扩张，Cursor 一口气放出 86 个岗位。</p>
+        <div class="shot-grid">
+          <figure class="shot"><div class="frame-shot r-4x3 corners-sm shadow-soft fit-cover"><img src="assets/article/fde-openai.png" style="object-position:top" alt=""></div><figcaption class="shot-cap">OpenAI · Deployment</figcaption></figure>
+          <figure class="shot"><div class="frame-shot r-4x3 corners-sm shadow-soft fit-cover"><img src="assets/article/fde-anthropic.png" style="object-position:top" alt=""></div><figcaption class="shot-cap">Anthropic · JD</figcaption></figure>
+          <figure class="shot"><div class="frame-shot r-4x3 corners-sm shadow-soft fit-cover"><img src="assets/article/fde-cursor.png" style="object-position:top" alt=""></div><figcaption class="shot-cap">Cursor · Careers</figcaption></figure>
+        </div>
+        <div class="stack gap-1">
+          <p class="q-line">“Forward-deployed engineers are about to become one of the most in-demand jobs in tech.”</p>
+          <p class="q-src">— Aaron Levie · Box CEO</p>
+        </div>
+        <div class="deck-foot">
+          <span>02 / 13</span><span class="lead-seg">+729% Indeed · +800% LinkedIn · +1165% Live Data</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 · FDE 是什么 (bridge diagram) -->
+    <section class="poster xhs" id="xhs-03-whatis">
+      <div class="atmo"></div><div class="grain"></div>
+      <div class="content stack gap-2" style="justify-content:space-between">
+        <div class="stack gap-1">
+          <p class="kicker">02 · FDE 是什么</p>
+          <h2 class="h-xl">不是售前，<br>是“特种工程师”</h2>
+        </div>
+        <p class="lead">分水岭很清楚——看交付物是 PPT，还是写进客户生产环境的代码。前者是售前，后者才是 FDE。</p>
+        <figure class="shot">
+          <div class="frame-shot r-4x3 corners-sm shadow-soft bg-paper-2 inset-sub"><img src="assets/article/fde-bridge.png" alt="FDE 桥梁图"></div>
+          <figcaption class="shot-cap">图：FDE 是连接技术可能性与业务价值的战略桥梁</figcaption>
+        </figure>
+        <div class="deck-foot">
+          <span>03 / 13</span><span>More code, fewer PowerPoints</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 · 混合身份 (venn diagram) -->
+    <section class="poster xhs" id="xhs-04-identity">
+      <div class="atmo"></div><div class="grain"></div>
+      <div class="content stack gap-2" style="justify-content:space-between">
+        <div class="stack gap-1">
+          <p class="kicker">03 · 一个人，几种身份</p>
+          <h2 class="h-xl">一个人，<br>几种身份</h2>
+        </div>
+        <p class="lead">FDE 同时是高级工程师、业务架构师、产品经理和临时 CTO 的混合体。</p>
+        <figure class="shot">
+          <div class="frame-shot r-16x9 corners-sm shadow-soft bg-ink inset-bal"><img src="assets/article/fde-venn.png" alt="FDE 身份交集图"></div>
+          <figcaption class="shot-cap">Platform × Software × Solutions 的交集</figcaption>
+        </figure>
+        <p class="body">一边读 schema、跑评估，一边出现在客户的业务例会上重塑工作流。也正因如此，他的总包已经追平、甚至超过同级别的 staff engineer。</p>
+        <div class="deck-foot">
+          <span>04 / 13</span><span>Engineer · Architect · PM · interim-CTO</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 · 最后一公里 (95/74/1) -->
+    <section class="poster xhs" id="xhs-05-gap">
+      <div class="atmo"></div><div class="grain"></div>
+      <div class="content stack" style="justify-content:space-between">
+        <div class="stack gap-2">
+          <p class="kicker">04 · AI 落地的最后一公里</p>
+          <h2 class="h-xl">钱投了，<br>价值没出来</h2>
+          <p class="lead">2025 年的一组数字，让很多 CFO 失眠：</p>
+        </div>
+        <div class="bignum-row">
+          <div class="bignum"><div class="n">95<span class="pct">%</span></div><div class="t">企业 AI 试点没有产生<br>可衡量的业务回报</div></div>
+          <div class="bignum"><div class="n">74<span class="pct">%</span></div><div class="t">公司无法把 AI 投入<br>扩大成业务价值</div></div>
+          <div class="bignum"><div class="n">1<span class="pct">%</span></div><div class="t">只有 1% 达到<br>完整 AI 成熟度</div></div>
+        </div>
+        <p class="lead">模型 ≠ 产品 ≠ 业务价值。中间隔着两道鸿沟——把通用模型变成可用产品，再把产品塞进真实业务流。填鸿沟的，只能是工程师。</p>
+        <div class="deck-foot">
+          <span>05 / 13</span><span class="lead-seg">Source · MIT 2025 · Emergence Capital 2026</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 · 金子与矿工 (pull quote) -->
+    <section class="poster xhs hero" id="xhs-06-quote">
+      <div class="atmo"></div><div class="grain"></div>
+      <div class="content stack" style="justify-content:space-between">
+        <p class="kicker">Pull Quote · 为什么 AI 落地需要人</p>
+        <div class="stack gap-4">
+          <blockquote class="pullquote" style="font-size:100px;line-height:1.22">模型是金子，<br>FDE 是矿工。<br>没有矿工，<br>金子挖不出来。</blockquote>
+          <div class="stack gap-1">
+            <div class="rule-accent"></div>
+            <p class="meta">— Emergence Capital · AI models are the gold, FDEs are the miners</p>
+          </div>
+        </div>
+        <div class="deck-foot">
+          <span>06 / 13</span><span class="lead-seg">把 agent 装进企业，比想象中工程化得多</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 · Palantir 祖师爷 -->
+    <section class="poster xhs" id="xhs-07-palantir">
+      <div class="atmo"></div><div class="grain"></div>
+      <div class="content stack gap-3" style="justify-content:space-between">
+        <div class="stack gap-1">
+          <p class="kicker">05 · 真正的祖师爷</p>
+          <h2 class="h-xl">这不是新发明，<br>已经 23 年</h2>
+        </div>
+        <p class="lead">如果说 FDE 是 OpenAI 2026 年的发明，那不过是一次招聘策略调整——它其实已经跑了 23 年。</p>
+        <div class="marginalia">
+          <div class="stack gap-2">
+            <p class="body">2003 年，Palantir 的第一批客户是 CIA、NSA、FBI——说不清要什么，数据也不能外传。于是他们做了个反直觉的决定：把工程师直接塞进客户的大楼。这，就是 FDE 的原型。</p>
+            <p class="body">这跟传统咨询最根本的差别在于：咨询的项目结束就结束了，Palantir 的项目结束之后，公司多了一条新能力。</p>
+          </div>
+          <div class="mg-col">
+            <p><span class="tag">2003</span><br>第一批客户<br>CIA · NSA · FBI</p>
+            <p>没有需求文档,<br>因为客户<br>不会写</p>
+            <p>没有反馈闭环,<br>工作流本身<br>就是机密</p>
+          </div>
+        </div>
+        <blockquote class="closing-line">客户说不清要什么，<br>那就把工程师塞进他的大楼。</blockquote>
+        <div class="deck-foot">
+          <span>07 / 13</span><span>Palantir invented the FDE model</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 · 砂石路 → 铺装路 -->
+    <section class="poster xhs" id="xhs-08-gravel">
+      <div class="atmo"></div><div class="grain"></div>
+      <div class="content stack gap-3" style="justify-content:space-between">
+        <div class="stack gap-1">
+          <p class="kicker">06 · Palantir 的复利</p>
+          <h2 class="h-xl">砂石路，<br>变成铺装路</h2>
+        </div>
+        <p class="lead">Delta 在客户现场趟出的定制方案，内部叫“砂石路”；一旦被多个客户验证，核心团队就把它沉淀进产品，变成所有人都能用的“铺装路”。</p>
+        <div class="duo">
+          <div class="blk"><div class="lab">DEV</div><div class="txt">一个能力，<br>服务很多客户</div></div>
+          <div class="blk"><div class="lab">DELTA</div><div class="txt">一个客户，<br>承接很多能力</div></div>
+        </div>
+        <p class="body">每个 FDE 项目，都是一次产品 R&D 的田野实验——客户付钱，让 Palantir 做研发。资本市场用了 20 年才看懂这件事。</p>
+        <div class="cover-stats">
+          <div class="s"><div class="n">+85%</div><div class="l">2026 Q1 营收同比</div></div>
+          <div class="s"><div class="n">+104%</div><div class="l">美国市场增长</div></div>
+          <div class="s"><div class="n">71%</div><div class="l">全年指引上调</div></div>
+        </div>
+        <div class="deck-foot">
+          <span>08 / 13</span><span class="lead-seg">gravel road → paved highway</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 · 中国版 FDE 在哪 -->
+    <section class="poster xhs" id="xhs-09-china">
+      <div class="atmo"></div><div class="grain"></div>
+      <div class="content stack gap-3" style="justify-content:space-between">
+        <div class="stack gap-1">
+          <p class="kicker">07 · 中国版 FDE 在哪</p>
+          <h2 class="h-xl">中国，<br>叫法不一样</h2>
+        </div>
+        <p class="lead">2025 下半年，类 FDE 岗位同比增长超 800%。但“FDE”这个英文 title，国内招聘市场几乎不用。</p>
+        <div class="stack gap-2">
+          <p class="meta" style="color:var(--accent)">国内主流叫法</p>
+          <div class="tag-list">
+            <span class="t">解决方案架构师</span><span class="t">交付架构师</span><span class="t">AI 落地工程师</span><span class="t">驻场交付工程师</span><span class="t">行业解决方案专家</span>
+          </div>
+        </div>
+        <div class="compare">
+          <div class="col muted"><div class="ttl">美国客户买</div><div class="desc">业务结果改造——把整条业务流重塑。</div></div>
+          <div class="col"><div class="ttl">中国客户买</div><div class="desc">功能清单交付——按条目验收功能。</div></div>
+        </div>
+        <p class="body">数字一致，复制度却有限：FDE 的核心价值在“重塑业务流”，但功能清单模式里没有它的定价机制。真正能跑通的，是把驻场 know-how 系统化为产品里的行业模板。</p>
+        <div class="deck-foot">
+          <span>09 / 13</span><span>火山 · 阿里云 · 智谱 · 零一万物 · 中数睿智</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 · 跨境电商最佳试验场 -->
+    <section class="poster xhs" id="xhs-10-crossborder">
+      <div class="atmo"></div><div class="grain"></div>
+      <div class="content stack gap-3" style="justify-content:space-between">
+        <div class="stack gap-1">
+          <p class="kicker">08 · 为什么是跨境电商</p>
+          <h2 class="h-xl">跨境电商，<br>最佳试验场</h2>
+        </div>
+        <div class="ledger">
+          <div class="ledger-row">
+            <div class="ledger-nb">01</div>
+            <div>
+              <div class="ledger-title">业务流极碎片化</div>
+              <div class="ledger-note">订单 → 库存 → 结算 → 汇率 → 关税 → 风控 → 广告，每个环节都是独立系统。</div>
+            </div>
+          </div>
+          <div class="ledger-row">
+            <div class="ledger-nb">02</div>
+            <div>
+              <div class="ledger-title">合规约束极重</div>
+              <div class="ledger-note">亚马逊 DD+7、各国 VAT——AI 方案必须嵌进卖家真实业务环境，不能只在通用云上跑通。</div>
+            </div>
+          </div>
+          <div class="ledger-row">
+            <div class="ledger-nb">03</div>
+            <div>
+              <div class="ledger-title">客户说不清需求</div>
+              <div class="ledger-note">知道自己痛，却说不清要什么——这正是 Palantir 当年面对的客户原型。</div>
+            </div>
+          </div>
+          <div class="ledger-row">
+            <div class="ledger-nb">04</div>
+            <div>
+              <div class="ledger-title">客单价适中</div>
+              <div class="ledger-note">腰部以上卖家年销数百万至数千万美元，撑得起“轻 FDE + 模板化产品”。</div>
+            </div>
+          </div>
+        </div>
+        <div class="deck-foot">
+          <span>10 / 13</span><span class="lead-seg">物流 · 税务 · 金融 · 广告 — 未来 12-18 个月</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11 · FastPay 样本 -->
+    <section class="poster xhs" id="xhs-11-fastpay">
+      <div class="atmo"></div><div class="grain"></div>
+      <div class="content stack gap-3" style="justify-content:space-between">
+        <div class="stack gap-1">
+          <p class="kicker">09 · 一个已经跑通的样本</p>
+          <h2 class="h-xl">把回款，<br>压到当天</h2>
+        </div>
+        <p class="body">FastPay 极速回款，是 Dowsure 把 FDE 思路落进跨境金融的样本。亚马逊标准结算要等 14 天、延迟交易更久——FastPay 把这段时差压到 T+0 当天到账，独家覆盖“标准订单 + 延迟交易”双通道。</p>
+        <p class="body">真正的难点不在金融端，而在工程端：对接亚马逊后台、不打断卖家资金路径、做实时风控。这跟 Palantir 把工程师塞进客户现场，没有本质差别。</p>
+        <div class="kv-row">
+          <div class="kv"><div class="k">T+0</div><div class="v">当天到账 · 标准 + 延迟双通道</div></div>
+          <div class="kv"><div class="k">$1,000 万</div><div class="v">单笔回款最高额度</div></div>
+          <div class="kv"><div class="k">100%</div><div class="v">卖家获批通过率</div></div>
+          <div class="kv"><div class="k">+47%</div><div class="v">年度周转率提升（测算）</div></div>
+        </div>
+        <blockquote class="closing-line">它把“销售发生的一刻”和“资金可用的一刻”，<br>做成了同一个时刻。</blockquote>
+        <div class="deck-foot">
+          <span>11 / 13</span><span>不依赖征信 · 基于平台真实交易授信 · 应收账款可出表</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12 · 范式转变 -->
+    <section class="poster xhs" id="xhs-12-paradigm">
+      <div class="atmo"></div><div class="grain"></div>
+      <div class="content stack gap-3" style="justify-content:space-between">
+        <div class="stack gap-1">
+          <p class="kicker">10 · 经营节奏的下一步</p>
+          <h2 class="h-xl">从买 AI，<br>到搭体系</h2>
+        </div>
+        <p class="lead">FDE 现象，指向企业 AI 落地的一次范式转变。</p>
+        <div class="compare">
+          <div class="col muted"><div class="ttl">过去三年</div><div class="desc">比“哪个模型更强”——GPT vs Claude，谁 benchmark 更高。像一道采购题：选对模型就赢。</div></div>
+          <div class="col"><div class="ttl">接下来三年</div><div class="desc">比“哪家公司体系更深”——谁有更多前沿部署工程师，谁能把 know-how 沉淀回产品。</div></div>
+        </div>
+        <blockquote class="closing-line">谁能把砂石路，<br>变成铺装路。</blockquote>
+        <div class="deck-foot">
+          <span>12 / 13</span><span>from buying AI to building systems</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13 · 三个判断 + 收尾 -->
+    <section class="poster xhs hero" id="xhs-13-closing">
+      <div class="atmo"></div><div class="grain"></div>
+      <div class="content stack gap-3" style="justify-content:space-between">
+        <div class="stack gap-2">
+          <p class="kicker">11 · 留给跨境从业者</p>
+          <h2 class="h-xl">不要等<br>“全自动 AI”</h2>
+        </div>
+        <div class="ledger">
+          <div class="ledger-row">
+            <div class="ledger-nb">01</div>
+            <div>
+              <div class="ledger-title">别等全自动</div>
+              <div class="ledger-note">“全自动”是营销话术，“半人工”才是工程现实。</div>
+            </div>
+          </div>
+          <div class="ledger-row">
+            <div class="ledger-nb">02</div>
+            <div>
+              <div class="ledger-title">懂业务的工程师更值钱</div>
+              <div class="ledger-note">比“懂 AI 的算法工程师”更稀缺——这类供给极度稀薄。</div>
+            </div>
+          </div>
+          <div class="ledger-row">
+            <div class="ledger-nb">03</div>
+            <div>
+              <div class="ledger-title">能把 FDE 沉淀成产品，才是分水岭</div>
+              <div class="ledger-note">否则只是“换前端的埃森哲”——估值天花板很低。</div>
+            </div>
+          </div>
+        </div>
+        <blockquote class="closing-line">FDE 不是新发明，<br>是被 AI 重新激活的 20 年老打法。</blockquote>
+        <div class="deck-foot">
+          <img class="brandlogo" src="assets/dowsure-logo.svg" alt="Dowsure 豆沙包">
+          <span>5 万卖家 · 100 亿发展资金 · SOC1 / ISO27001</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <!-- Background is pure CSS: paper + soft radial wash (.atmo) + faint grain. No WebGL. -->
+</body>
+</html>

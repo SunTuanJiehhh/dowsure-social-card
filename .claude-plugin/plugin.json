@@ -1,0 +1,22 @@
+{
+  "name": "dowsure-social-card",
+  "description": "把 Dowsure(豆沙包) 文章/飞书稿转成 DowInsights 风格小红书卡片组 + 精准可编辑 Figma 画板。Editorial 杂志风 + 品牌玫红 #F40064。基于 Guizang 老师的 guizang-social-card-skill (AGPL-3.0) 衍生开发。",
+  "version": "1.0.0",
+  "author": {
+    "name": "TJ Sun",
+    "url": "https://github.com/SunTuanJiehhh"
+  },
+  "license": "AGPL-3.0",
+  "homepage": "https://github.com/SunTuanJiehhh/dowsure-social-card",
+  "keywords": [
+    "小红书",
+    "social-card",
+    "figma",
+    "dowsure",
+    "editorial",
+    "dowinsights"
+  ],
+  "skills": [
+    "./skills/dowsure-social-card"
+  ]
+}

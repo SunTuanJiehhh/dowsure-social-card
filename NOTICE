@@ -1,0 +1,21 @@
+dowsure-social-card
+Copyright (C) 2026 TJ Sun (Dowsure / 豆沙包)
+
+本作品是基于 Guizang(归藏/guizang)老师的 "guizang-social-card-skill" 衍生开发的作品，
+原作以 GNU AGPL-3.0 协议发布。根据 AGPL-3.0 的传染性要求，本衍生作品同样以 AGPL-3.0 发布，
+并在此保留对原作者的署名与致谢。
+
+This work is a derivative of and based on "guizang-social-card-skill" by Guizang,
+which is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
+In accordance with AGPL-3.0, this derivative work is likewise licensed under AGPL-3.0,
+with attribution to the original author preserved here.
+
+上游原作 / Upstream original:
+  guizang-social-card-skill  (Guizang 老师 · 归藏的 AI 工具箱)
+
+本衍生作品新增/改动 / Additions in this derivative:
+  - Dowsure 品牌视觉系统（品牌玫红 #F40064、白底干净背景、logo 规则、排版偏好）
+  - HTML → Figma 精准导出管线（figma-export.cjs / gen-figma-text.cjs / use_figma 注入）
+  - 飞书取稿工作流、卡片配方、DowInsights 栏目化结构
+
+感谢 Guizang 老师的开源工作。Thanks to Guizang for the original open-source work.
