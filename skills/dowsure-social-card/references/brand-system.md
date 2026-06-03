@@ -69,13 +69,13 @@ kicker 在 y96，章节标题压到 **y≈178**（kicker→标题留 ~56px 气�
 
 页尾的斜体总结句（「FDE 不是新发明…」类）：
 - font-size **42px 统一**（不是 36），line-height ≈ 1.42。
-- 左侧加一条 **16px 宽玫红粗竖条**（不是 3px 细线）：
+- 左侧一条 **3px 细玫红竖条**（★ TJ 明确要细的，16px 太粗丑；就用 3px weight）：
   ```css
   .closing-line{font-family:var(--serif-zh);font-style:italic;font-weight:500;
     font-size:42px;line-height:1.42;color:var(--ink);
-    border-left:16px solid var(--accent);padding-left:28px;}
+    border-left:3px solid var(--accent);padding-left:30px;}
   ```
-- **★【TJ 偏好 · 一致性】相邻/所有收尾卡的竖线 + 文字，位置大小必须完全一致。** 做法：所有金句都用同一个 `.closing-line` 类、**不要给单卡内联 `font-size`**；竖线由 CSS `border-left` 烤进底图自动一致，**别在 Figma 里手动加粗细/高低不一的 Rectangle/Line**（那是不一致的根源）。导出 Figma 前若发现手加的竖条节点，删掉，只留烤进底图的那条。
+- **★【TJ 偏好 · 一致性】相邻/所有收尾卡的竖线 + 文字，位置大小必须完全一致。** 做法：所有金句都用同一个 `.closing-line` 类、**不要给单卡内联 `font-size`**；竖线由 CSS `border-left`（3px）烤进底图自动一致，**别在 Figma 里手动加 Rectangle/Line**（粗细高低不一，是不一致的根源）。导出 Figma 前若发现手加的竖条节点，删掉，只留烤进底图那条细线。
 
 > 思源宋体在 Figma 无斜体 → Figma 里这些「斜体」会变正体（可接受）；HTML/PNG 里是斜体。
 
