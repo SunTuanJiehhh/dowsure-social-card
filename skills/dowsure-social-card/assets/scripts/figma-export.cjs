@@ -99,7 +99,7 @@ const POSTERS = [
 
   // ---- 2) atmosphere + rules background (text transparent) ----
   await page.addStyleTag({
-    content: `.poster .content, .poster .content *{ color:transparent !important; -webkit-text-fill-color:transparent !important; caret-color:transparent !important; } .poster .brandlogo, .poster .dot{ visibility:hidden !important; }`,
+    content: `.poster .content, .poster .content *{ color:transparent !important; -webkit-text-fill-color:transparent !important; caret-color:transparent !important; } .poster .brandlogo, .poster .dot{ visibility:hidden !important; } .poster .closing-line{ border-left:0 !important; }`,
   });
   await page.waitForTimeout(300);
   for (const id of POSTERS) {

@@ -75,7 +75,13 @@ kicker 在 y96，章节标题压到 **y≈178**（kicker→标题留 ~56px 气�
     font-size:42px;line-height:1.42;color:var(--ink);
     border-left:3px solid var(--accent);padding-left:30px;}
   ```
-- **★【TJ 偏好 · 一致性】相邻/所有收尾卡的竖线 + 文字，位置大小必须完全一致。** 做法：所有金句都用同一个 `.closing-line` 类、**不要给单卡内联 `font-size`**；竖线由 CSS `border-left`（3px）烤进底图自动一致，**别在 Figma 里手动加 Rectangle/Line**（粗细高低不一，是不一致的根源）。导出 Figma 前若发现手加的竖条节点，删掉，只留烤进底图那条细线。
+- **★【TJ 偏好 · 一致性】所有收尾金句的竖线 + 文字必须完全一致（同 x、同 y、同长度、同字号 42），跨卡水平对齐。**
+  - **HTML / PNG**：用同一个 `.closing-line` 类（border-left 3px），别给单卡内联 `font-size`。bar = 文字的 border，天然对齐。
+  - **Figma：竖条不要烤进底图！** 文字一旦在 Figma 里被挪动，烤死在底图的竖条就跟文字错位了（这是 TJ 反复指出的「定位不准」根因）。正确做法：
+    1. `figma-export.cjs` 给 bg 注入 `.poster .closing-line{ border-left:0 !important }`，让底图**不含**竖条。
+    2. 在 Figma 里把所有金句文字**统一到同一 `(x=121, y)`、统一字号 42 / 行高 59.6**（2 行）。
+    3. 每张金句单独建一条 **3px 矢量竖条**（`createRectangle`，同 `x=88`、同 `y`、`height = 文字节点高度`），玫红填充。4 条坐标尺寸完全一致 → 跨卡对齐。
+  - 单句太长（首行折行成 3 行）→ 竖条会变长、不齐。**金句压到 2 行**，每行 ≤ ~15 字。
 
 > 思源宋体在 Figma 无斜体 → Figma 里这些「斜体」会变正体（可接受）；HTML/PNG 里是斜体。
 
