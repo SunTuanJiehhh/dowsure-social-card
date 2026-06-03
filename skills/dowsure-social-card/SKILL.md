@@ -42,6 +42,8 @@ description: 把 Dowsure(豆沙包)的文章/飞书文档转成「DowInsights �
 - 用 `references/card-recipes.md` 选每页配方，**交错节奏**（封面 / 数据 / 边注 / 引语 / 账本 / 对比 / 收尾），别张张都是「标题+卡片」。
 - 有本地配图 → 安排 1–3 张「证据墙 / 大图」卡。
 
+> 🔴 CHECKPOINT · 🛑 STOP：把页面计划（共 N 张，每张「配方 + 一句话主旨」）发给 TJ，**等确认或调整后再搭 HTML**。别跳过——白烤十几张卡再返工最贵。
+
 ### 3. 搭 HTML
 
 - 从 `assets/example/example-deck.html`（完整 FDE 13 卡工作样例）起步，**复制成项目里的 `index.html`**，替换内容。它是 Dowsure 品牌 CSS 的完整工作基底（品牌玫红 / 干净背景 / logo / 页脚都在）。
@@ -61,6 +63,19 @@ description: 把 Dowsure(豆沙包)的文章/飞书文档转成「DowInsights �
 - 内联展示 PNG（绝对路径）+ Figma 链接（同一文件可迭代）。
 - 一句话说清：N 张、品牌色、配图来源、可编辑范围。
 
+## 出错怎么办（三段式兜底：触发 → 一线修复 → 仍失败兜底）
+
+> 摘自 `references/figma-pipeline.md` 的实战踩坑，常见故障先按这张表救。
+
+| 触发条件 | 一线修复 | 仍失败兜底 |
+|---|---|---|
+| `use_figma` 报错 | 原子失败＝整段没执行、无副作用；读错误 → 只改出错那处 → 重试 | 别盲目重跑；把出错 chunk 拆更小（每块 <50k 字符）再注入 |
+| 文字注入后换行/位置乱 | 走 `textAutoResize` 流程：NONE → `resize(w,h)` → HEIGHT；字体按映射表 `loadFontAsync` 全预加载 | Noto Serif SC 在 Figma 无斜体 → 斜体一律映射 `Medium` 正体 |
+| 底图残留旧元素（圆点/旧分隔线） | 改过 HTML 必须重跑 `figma-export.cjs` 再重传该底图（重传＝替换，非叠加） | 整帧删重建：先 `findAllWithCriteria` 收进数组、循环结束再 `remove`，别边遍历边删 |
+| `upload_assets` 底图没贴上 | submitUrl 10 分钟过期 → 拿到尽快 `curl -F "file=@bg/<id>.png" "<submitUrl>"`，带 nodeId 自动设填充 | 链接过期就重跑 `upload_assets` 拿新 submitUrl |
+| 取本地图报 `Operation not permitted` | macOS TCC 锁了 `~/Desktop` → 让 TJ 把图拖进项目目录（Documents 下）再处理 | 改用原生数据视觉，不强求嵌图 |
+| 渲染 0 FAIL 但目检溢出/没吃满画布 | 回 `brand-system.md` 调 y 位/字号；3:4 必须吃满 ≥75% | 砍该卡信息量，或拆成两张 |
+
 ## Non-Negotiables（含 TJ 偏好，照做即可）
 
 1. **品牌色 `#F40064`**（玫红）。墨色中性近黑 `#15171c`，纸面冷调 `#f2f4f5`。**大标题（h-display / h-xl / pullquote）全部用玫红。**
@@ -73,3 +88,14 @@ description: 把 Dowsure(豆沙包)的文章/飞书文档转成「DowInsights �
 8. **页码全卡一致**（NN / 总数，封面到尾页都要）。
 9. 3:4 必须吃满画布（≥75%）。不编数据、不裁脸/关键 UI。
 10. **绝不改 guizang 原 skill**；只读其 references 参考。
+
+## 绝不做（反例黑名单 · 命中任一即停手重做）
+
+1. ❌ **编数据 / 改硬指标凑数** —— 涉及现价、政策、最新数据先核查；宁缺毋造。
+2. ❌ **WebGL 水墨等高线背景** —— TJ 嫌"细胞分裂"脏；背景只用纸 + 淡颗粒 + hero 柔光。
+3. ❌ **改 guizang 原 skill** —— 只读它的 references 作参考，绝不动它的文件。
+4. ❌ **直接复用飞书内嵌图** —— 临时鉴权链接会失效；改原生数据视觉，或用 TJ 给的本地素材。
+5. ❌ **跳过页面计划确认就开烤** —— 必须先过上方 🔴 CHECKPOINT。
+6. ❌ **漏章节 / 张张「标题+卡片」** —— 长稿每个 H2 要有落点，节奏交错（封面/数据/边注/引语/账本/对比/收尾）。
+7. ❌ **裁脸 / 裁关键 UI；3:4 不吃满画布（<75%）**。
+8. ❌ **大标题用墨色** —— h-display / h-xl / pullquote 一律玫红 `#F40064`。
