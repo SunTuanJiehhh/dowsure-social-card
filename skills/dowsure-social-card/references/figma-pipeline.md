@@ -53,7 +53,8 @@
 - **底图重传会替换填充**（不是叠加），`coverFills` 仍为 1。改了 HTML（删元素/换结构）记得重跑 `figma-export.cjs` 再重传对应底图——否则旧元素（如分隔圆点）会留在底图里。
 - **改文案（消孤行/换词）→ Figma 文字节点要同步**：`loadFontAsync` → `node.characters = 新文案`（按旧文案前缀在帧内找到那个 TEXT 节点）。底图不用动（文字本就透明）。光改 HTML 不同步 Figma，Figma 里仍是旧孤行。
 - **收尾竖条别烤进底图**：`figma-export.cjs` 给 bg 注入 `.poster .closing-line{border-left:0}`，竖条改用 Figma 独立 `createRectangle`（3px、同 x88 / 同 y / 高=文字高），4 张完全一致、跨卡对齐。烤进底图会随文字移动错位（TJ 反复指出的「定位不准」根因）。
-- **upload_assets**：返回 `submitUrl`，用 `curl -F "file=@bg/<id>.png" "<submitUrl>"`，带 `nodeId` 会自动设成该帧填充并返回 `placedOnNodeId`。链接 10 分钟过期，拿齐就尽快 POST。
+- **upload_assets**：返回 `submitUrl`，用 `curl -F "file=@bg/<id>.png" "<submitUrl>"`（multipart `file` 字段）。链接 10 分钟过期，拿齐尽快 POST。
+  - ⚠️ **`nodeId` 自动 place 不一定生效（已踩）**：curl 返回 `{success,imageHash}` 看似成功，但帧 `fills` 可能仍是建帧时的白底 SOLID，把底图盖住、配图不显示（截图中部一片白）。**稳妥做法**：curl 时顺手解析 imageHash（`curl … | grep -o '"imageHash":"[^"]*"' | cut -d'"' -f4`），再用 `use_figma` 手动设填充 `frame.fills=[{type:"IMAGE",imageHash,scaleMode:"FILL"}]`；最后 `use_figma` 读一遍各帧 `fills`，确认**都含 IMAGE**（`f.fills.map(p=>p.type)`）再收工。
 - **脚本无文件系统访问**：use_figma 的 `code` 只能内联，没法读盘 → chunk 内容要 Read 出来再当 `code` 传。
 - **原子失败**：use_figma 报错=整段不执行、无副作用。读错误→改→重试，别盲目重跑。
 
