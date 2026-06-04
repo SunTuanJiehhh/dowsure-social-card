@@ -103,6 +103,15 @@ kicker 在 y96，章节标题压到 **y≈178**（kicker→标题留 ~56px 气�
 - **硬事实优先**：一组数据里，**带「测算/估算/约」的软指标能砍就砍**。TJ 把 FastPay 4 个指标砍成 3 个（删了「+47% 年度周转率提升（测算）」），只留 T+0 / $1,000 万 / 100%。宁少而硬。
 - 数据卡的大数字用玫红 serif；标注用冷灰 mono/sans。
 
+## 5b. ★ 禁止孤行寡字（hard rule，TJ 反复强调）
+
+**任何段落都不能让一个字（或 1–3 个字）单独成最后一行。** 孤行寡字 = 不专业，social 卡片一律不允许。
+
+- **怎么查**：跑 `assets/scripts/check-orphans.cjs`（Chromium 贪婪换行，≈ Figma 断行）。扫 body / lead / ledger-note / kv·v 等多行文本，末行 ≤ ~3 字就报警。
+- **怎么修**：**改文案**——加/减几个字让末行饱满（≥ 4–5 字）。**别只靠 `text-wrap:pretty`**（只对 PNG 有效、Figma 不认，会让两边断行不一致）。改完**重跑 check-orphans 直到清零**。
+- **Figma 同步**：HTML 改了文案，Figma 对应文字节点的 `characters` 也要同步更新（`loadFontAsync` → set characters），否则 Figma 里仍是旧孤行。
+- **例外**：marginalia 边注栏（`.mg-col`）那种**有意的短行堆叠**（如「没有需求文档,/因为客户/不会写」）不算孤行。
+
 ## 6. 页眉 / 页脚 / 页码
 
 - 页眉：左 kicker（`NN · 小标题` mono）+ 右 logo。封面左上是 `DOWINSIGHTS` 栏目名（只留这个，不要堆 "AI 跨境 02 / 2026" 一串）。

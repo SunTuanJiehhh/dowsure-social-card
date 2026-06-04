@@ -1,0 +1,6 @@
+SKILL.md.bak.*
+*.bak.*
+output/
+figma/
+node_modules/
+.DS_Store

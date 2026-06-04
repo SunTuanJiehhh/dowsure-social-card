@@ -26,15 +26,16 @@
 1. node render.cjs                 # 最终 PNG
 2. node figma-export.cjs           # layout.json + 干净底图
 3. node gen-figma-text.cjs         # 4 个 text-chunk
-4. create_new_file (design)        # 拿 fileKey（planKey 来自 whoami）
-5. use_figma: 建 13 个命名帧        # 名字 "01 · …" … "13 · …"，1080×1440，paper 填充，clipsContent
+4. ★ 固定文件 fileKey = 6XD1W72t7OegPTiyEClwGT   # 不要 create_new_file！所有 Dowsure 卡都进这一个文件
+     新一组卡 → use_figma: `figma.createPage()` 建新 page（按主题命名）→ `setCurrentPageAsync` 切过去
+5. use_figma: 建命名帧              # 名字 "01 · …" … "NN · …"，1080×1440，白底填充，clipsContent
 6. upload_assets ×13 (nodeId 逐帧)  # 拿 submitUrl → curl POST bg/<id>.png（multipart file 字段）
 7. use_figma ×4: 注入 text-chunk    # Read 每个 chunk 内容当 code 传入
 8. use_figma: createNodeFromSvg     # 贴 logo（见下）
 9. use_figma: 截图抽检若干帧         # node.screenshot({scale:0.4}) 内联返回
 ```
 
-> 迭代同一文件时跳过 4，先删旧帧再建新帧：`for(const f of figma.currentPage.children.slice()){if(f.type==="FRAME")f.remove();}`
+> **重做同一组卡**：在该组的 page 上先删旧帧再建新帧：`for(const f of figma.currentPage.children.slice()){if(f.type==="FRAME")f.remove();}`。**换新主题/新文章**：新建一个 page，别动别的 page（一文件多 page，按主题归档）。
 
 ## 关键踩坑（都踩过）
 
@@ -43,6 +44,8 @@
 - **文字框**：`textAutoResize="NONE"` → `resize(w,h)` → 再 `textAutoResize="HEIGHT"`（固定宽、自动高，换行和 HTML 一致、不裁切）。
 - **删节点别边遍历边删**：先 `findAllWithCriteria` 收集进数组，循环结束后再 `t.remove()`；否则报 "node … does not exist"（脚本原子回滚）。
 - **底图重传会替换填充**（不是叠加），`coverFills` 仍为 1。改了 HTML（删元素/换结构）记得重跑 `figma-export.cjs` 再重传对应底图——否则旧元素（如分隔圆点）会留在底图里。
+- **改文案（消孤行/换词）→ Figma 文字节点要同步**：`loadFontAsync` → `node.characters = 新文案`（按旧文案前缀在帧内找到那个 TEXT 节点）。底图不用动（文字本就透明）。光改 HTML 不同步 Figma，Figma 里仍是旧孤行。
+- **收尾竖条别烤进底图**：`figma-export.cjs` 给 bg 注入 `.poster .closing-line{border-left:0}`，竖条改用 Figma 独立 `createRectangle`（3px、同 x88 / 同 y / 高=文字高），4 张完全一致、跨卡对齐。烤进底图会随文字移动错位（TJ 反复指出的「定位不准」根因）。
 - **upload_assets**：返回 `submitUrl`，用 `curl -F "file=@bg/<id>.png" "<submitUrl>"`，带 `nodeId` 会自动设成该帧填充并返回 `placedOnNodeId`。链接 10 分钟过期，拿齐就尽快 POST。
 - **脚本无文件系统访问**：use_figma 的 `code` 只能内联，没法读盘 → chunk 内容要 Read 出来再当 `code` 传。
 - **原子失败**：use_figma 报错=整段不执行、无副作用。读错误→改→重试，别盲目重跑。
