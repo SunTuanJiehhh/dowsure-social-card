@@ -1,5 +1,7 @@
 # 卡片配方
 
+> **已并入 `layout-recipes.md` 的「Dowsure 常用配方（R1–R10）」章节（含数据组件速查表 + 每条对应的 guizang M 配方映射）。此处保留作速查。**
+
 DowInsights 风格 3:4 卡的 10 种结构。交错使用，别张张同款。每张都遵守 `brand-system.md`（玫红标题、干净背景、每卡 logo、页脚页码）。底层 class 来自 guizang Editorial 模板（`.kicker / .h-display / .h-xl / .lead / .body / .pullquote / .ledger / .marginalia / .deck-foot / .frame-shot` 等）。
 
 每卡骨架：

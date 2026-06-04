@@ -1,6 +1,22 @@
 # Dowsure 品牌视觉系统
 
-固化 Dowsure(豆沙包) 的小红书卡片视觉语言。建立在 guizang 的 **Editorial Magazine × E-ink** 模式上，但换成 Dowsure 品牌色、干净背景，并固化 TJ 的排版偏好。
+固化 Dowsure(豆沙包) 的小红书卡片视觉语言。建立在 guizang 的 **Editorial Magazine × E-ink** 与 **Swiss International** 两套模式上，换成 Dowsure 品牌色、干净背景，固化 TJ 的排版偏好。
+
+## 0. 覆盖范围：两套视觉系统 × 亮/暗
+
+Dowsure 锁定 **4 个默认主题**（token 全文见 `references/theme-presets.md`「Dowsure 品牌主题」、模板见 `assets/template-dowsure-editorial.html`）：
+
+| 主题 | data-theme | 系统 | 明暗 | 典型用途 |
+|---|---|---|---|---|
+| Dowsure-Editorial 亮 | `dowsure` | Editorial × 水墨 | 亮白底 | **默认主力** · 行业洞察 / 商业评论 / 产品解读 |
+| Dowsure-Editorial 暗 | `dowsure-dark` | Editorial × 水墨 | 暗黑底 | 封面 key art / 强冲击 hero / 暗调配图 |
+| Dowsure-Swiss 亮 | `dowsure-swiss` | Swiss | 亮白底 | 数据密集 / 对比 / 流程 / 榜单 |
+| Dowsure-Swiss 暗 | `dowsure-swiss-dark` | Swiss | 暗黑底 | 黑×粉撞色封面 / 数据 hero |
+
+- **accent 永远 `#F40064`，四套不变。** Dowsure 默认锁玫红，guizang 原 10 主题仅作备用、不主动用。
+- **本文档第 1–7 节的全部 TJ 铁律（玫红 / 白底 / 右上柔光 / 每卡 logo / 章节标题 y178 / pullquote 120 / 收尾金句竖条 / 页码全卡一致 / 禁孤行 / 禁 WebGL）默认写的是 Editorial 亮色，但同样适用于其余 3 套；各套差异在第 8 节（Swiss 化）与第 9 节（深色用法）单列。**
+
+下面第 1 节起，先讲 Editorial 亮色（默认主力），再在第 8–9 节叠加 Swiss 与深色。
 
 ## 1. 品牌 Token（覆盖 indigo-porcelain 基底）
 
@@ -23,6 +39,17 @@
 - logo 盾牌实际是 `#E31860`，正文玫红用 `#F40064`（更亮、更品牌）。两者都对，不要混。
 - 纸面保持**冷调中性**（fintech 感），不要暖米色。
 
+> 上面这套是 Editorial 亮色（`data-theme="dowsure"`，默认主力）。**现在模板已直接定义 `dowsure` 主题块**（不再靠覆盖 indigo-porcelain），token 与 `assets/template-dowsure-editorial.html` 逐字一致，照模板用即可。
+
+**深色变体（黑 × 玫红，用于封面 / hero，见第 9 节）：**
+
+| 主题 | data-theme | paper | paper-2 | ink | accent | 备注 |
+|---|---|---|---|---|---|---|
+| Dowsure-Editorial 暗 | `dowsure-dark` | `#0e0d0c` | `#1a1714` | `#ece2cf` | **`#F40064`** | 借 Midnight Ink 暗纸骨架；金 → 玫红；颗粒翻 `screen` 暖白点 |
+| Dowsure-Swiss 暗 | `dowsure-swiss-dark` | `#0a0a0a` | grey-1 `#1a1a1a` | `#fafafa` | **`#F40064`** (块上字 `--accent-on:#fff`) | 纯黑底；grey-2 `#2a2a2a` / grey-3 `#8a8a8a` |
+
+完整 CSS token 见 `references/theme-presets.md`「Dowsure 品牌主题」。
+
 ## 2. 背景系统 —— 干净，无细胞纹
 
 **TJ 明确反馈：WebGL 水墨等高线配玫红像「细胞分裂」，太脏。禁用。**
@@ -43,6 +70,15 @@
    ```
 
 **不要**：`<canvas class="mag-bg">` WebGL、等高线、网格、点阵、blob。白纸 + 颗粒 + 右上柔光，干净最重要。
+
+**深色 Editorial（`dowsure-dark`）的背景**：同样禁 WebGL，但颗粒翻成 `screen` 暖白点（亮色的 multiply 黑点在黑底上不可见）。`.atmo` 右上玫红柔光保留（暗底上玫红更亮、更冲）。
+
+```css
+[data-theme="dowsure-dark"] .grain{ opacity:.12; mix-blend-mode:screen;
+  background-image: radial-gradient(rgba(255,244,214,.08) 1px, transparent 1px); background-size:4px 4px; }
+```
+
+**Swiss（`dowsure-swiss` / `dowsure-swiss-dark`）的背景**：Swiss 本就是纯色块语言，**不用 `.atmo` 柔光、不用颗粒**——白底或黑底直接铺，靠玫红块 / 发丝线 / 网格做层级。柔光是 Editorial 专属，别带进 Swiss。
 
 ## 3. 排版规则（含 TJ 偏好）
 
@@ -119,7 +155,67 @@ kicker 在 y96，章节标题压到 **y≈178**（kicker→标题留 ~56px 气�
 - **★【TJ 偏好 7】页码全卡一致**：封面到尾页每张都要 `NN / 总数`，别漏尾页。
 - 尾页页脚放品牌事实：`5 万卖家 · 100 亿发展资金 · SOC1 / ISO27001`。
 
-## 7. Dowsure 业务事实（可直接引用，勿编）
+## 8. Swiss 的 Dowsure 化（`dowsure-swiss` / `dowsure-swiss-dark`）
+
+Swiss International 是 Dowsure 的**第二套**视觉系统，用于数据密集 / 对比 / 流程 / 榜单 / 强秩序信息卡。它**不替换** Editorial，是并行的另一种语气：Editorial 是「杂志感、有温度」，Swiss 是「秩序感、信息硬」。token 见 `theme-presets.md`「Dowsure-Swiss 亮 / 暗」。
+
+把 guizang Swiss 铁律 + Dowsure 品牌叠加，得到下面这套：
+
+### ★ 玫红是唯一 accent
+
+- guizang Swiss 有 IKB 蓝 / 柠黄 / 柠绿 / 安全橙 4 套 accent —— **Dowsure 全部弃用，锁死 `#F40064` 一个玫红**。
+- 一张卡里**只有一个彩色** = 玫红。其余全是中性灰阶（grey-1/2/3）+ 黑 / 白。**不要第二个彩色、不要渐变 / 阴影 / 玻璃 / 混色**（Swiss 铁律）。
+- 玫红块上的字统一 `--accent-on:#ffffff`（玫红够深，反白清晰；不用黑字）。
+
+### ★ the larger the lighter（越大越细，保留）
+
+guizang Swiss 的核心字号铁律，Dowsure 原样保留：
+
+- 超大号走更细字重：`h-hero` 240 / `h-statement` 180 / `h-xl` 120 / `num-mega` 200 / `num-xl` 144 —— 字号越大，font-weight 越轻（300 甚至更细），靠字号本身做冲击，不靠加粗。
+- 正文 / 标注才用常规字重；最小可读 body ≥ 26、lead ≥ 30、t-cat / t-meta ≥ 18（mono 可 20）。**切文案，不缩字。**
+
+### ★ 纯块 + 发丝线 + 网格节奏
+
+- 信息靠**对齐、留白、网格**组织，不靠装饰。块面用 `--grey-1` 铺底，边界用 `--grey-2` 发丝线（1px），次要文字 `--grey-3`。
+- 玫红只点在：一个巨数 / 一个 KPI / 一条强调横条 / 一个分类标签。**克制**，一卡一两处。
+
+### Swiss 上的 Dowsure 品牌元素（与 Editorial 一致的铁律）
+
+下面这些第 4–6 节的铁律，**Swiss 同样执行**，只是底色语言换成 Swiss：
+
+- **每卡 logo**：右上角 234×34 / x758 y98 / 右缘对齐 992（黑底版 `dowsure-swiss-dark` 上 logo 仍是同一个 SVG，玫红盾在黑底上更跳）。
+- **页码全卡一致**：`NN / 总数` 封面到尾页每张都有；Swiss 里页脚走发丝线分隔 + mono，不用 Editorial 的 `.deck-foot` 暖调，但页码格式 / 一致性规则相同。
+- **数字格式**：千位符 + 单位前空格 `$1,000 万`；软指标（测算 / 估算）能砍就砍，留硬事实。
+- **禁孤行**：同样跑 `check-orphans.cjs` 清零；Swiss 文字块更短，更要盯末行 ≥ 4–5 字。
+- **收尾金句竖条**：Swiss 若用收尾金句，竖条仍是 3px 玫红、跨卡同 x/y/长度/字号；Figma 里同样用独立矢量条、不烤底图（见第 4 节 + `figma-pipeline.md`）。
+
+## 9. 深色主题用法（黑 × 玫红：`dowsure-dark` / `dowsure-swiss-dark`）
+
+深色是**封面 / 强冲击 hero 的专用语气**，不是日常多图文卡的通用底。判断标准：这张图是不是要「一眼炸住」（封面、keyart、单一巨字宣言、强冲击数据 hero、源配图本身就是暗调）——是，才上深色；常规承载信息的内页仍用亮色（`dowsure` / `dowsure-swiss`）。
+
+### 什么时候用深色
+
+- **封面 / key art**：一组卡的首图，黑底玫红巨字，最大化点击欲。
+- **强冲击 hero**：单句宣言（pullquote 120px 玫红）、单个巨数（`$1,000 万` / `100%`）。
+- **暗调源配图**：照片 / 截图本身偏暗，亮纸会削弱它 → 用 `dowsure-dark` 让图出血。
+- **黑 × 粉撞色探索**：见下。
+
+### 两套深色的取舍
+
+- **`dowsure-dark`（Editorial 暗）**：暖黑底 `#0e0d0c` + 暖白字 `#ece2cf` + 玫红，有杂志 / 电影感。适合有温度的封面、叙事 hero、暗调摄影。颗粒翻 `screen`（见第 2 节）。排版纪律同 Midnight Ink：**不堆不透明卡片 / 色块**，靠图片出血 + 玫红 accent 做层级。
+- **`dowsure-swiss-dark`（Swiss 暗）**：纯黑底 `#0a0a0a` + 纯白字 + 玫红，最硬、最撞。适合数据 hero、榜单封面、科技夜色。块面切割、发丝线 `#2a2a2a`、玫红块反白字。
+
+### 黑 × 粉撞色（设计方向，非固定主题）
+
+不是第 5 个主题，是封面 / hero 的**设计方向**，落在上面两套深色上实现。需要时**并行出 3–4 个变体让 TJ 挑**，胜出者沉淀成命名样例：
+
+1. 黑底玫红巨字（Editorial 暗 serif / Swiss 暗 sans 均可）。
+2. 黑 / 白 / 玫红三色构成（Swiss 暗，块面切割、强秩序）。
+3. 玫红整块反白字（`--accent` 铺整块 + `--accent-on` 白字，最跳）。
+
+> 深色封面 + 亮色内页可以混用在**同一组卡**里（封面 hero 用 `dowsure-dark`，内页用 `dowsure`），这是允许的"封面/内页"分工，不算"跨页混主题"。但同一张内页不要中途换明暗。
+
+## 10. Dowsure 业务事实（可直接引用，勿编）
 
 - 出口跨境电商一站式智能科技服务商；与 Amazon / Walmart / eBay / Shopee 长期或独家合作。
 - 深圳 / 上海 / 香港 / 新加坡 / 胡志明 设点。

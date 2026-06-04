@@ -4,6 +4,11 @@
 
 需要 Figma MCP（`f82b7486…` 那台，官方 use_figma）。**每次 `use_figma` 前必须先加载 `figma:figma-use` 技能**，并传 `skillNames:"figma-use"`。
 
+> **覆盖两套模板：Editorial 与 Swiss 都走这同一条管线。** 脚本**风格无关**——`figma-export.cjs` 从渲染好的 DOM 抽真实坐标，不关心是杂志风还是 Swiss 风，所以 `template-dowsure-editorial.html`（Editorial 亮 / 暗）和 Swiss 模板（`dowsure-swiss` / `dowsure-swiss-dark`）共用整套流程、脚本不分叉。亮 / 暗也只是 token 不同，底图照样烤、坐标照样抽。
+>
+> - **Editorial 已用 FDE 13 卡跑通验证**（样例见 `assets/example/`），是成熟接。
+> - **Swiss 是新接**：第一组 Swiss 卡要**逐帧重点抽检文字定位**（Swiss 块面密、对齐严，错位更显眼）。首组验证通过后即与 Editorial 同等可靠。
+
 ## 为什么这么设计
 
 - WebGL/水墨/颗粒/柔光这些**没法做成原生矢量** → 烤进底图（一张图当画板填充）。
@@ -11,6 +16,7 @@
 - 分隔线/账本横线是 CSS border → 也烤进底图。
 - **只有文字单独做成原生图层**（TJ 要逐字调的就是文字）。
 - logo 用 `createNodeFromSvg` 贴矢量（可无损缩放）。
+- **Swiss 同理**：Swiss 的灰块（`--grey-1` 面板）、发丝线（`--grey-2` border）、玫红横条 / 块都是 CSS 背景或 border → 一并烤进底图；Swiss 卡里需要逐字调的还是只有文字。所以同一条管线、同一套脚本，Editorial / Swiss / 亮 / 暗全适用，无需为 Swiss 改脚本。
 
 ## 三个脚本（在 `assets/scripts/`）
 
@@ -26,8 +32,9 @@
 1. node render.cjs                 # 最终 PNG
 2. node figma-export.cjs           # layout.json + 干净底图
 3. node gen-figma-text.cjs         # 4 个 text-chunk
-4. ★ 固定文件 fileKey = 6XD1W72t7OegPTiyEClwGT   # 不要 create_new_file！所有 Dowsure 卡都进这一个文件
-     新一组卡 → use_figma: `figma.createPage()` 建新 page（按主题命名）→ `setCurrentPageAsync` 切过去
+4. ★ 固定文件 fileKey = 6XD1W72t7OegPTiyEClwGT   # 【铁律】绝不 create_new_file！所有 Dowsure 卡（两套全部主题）都进这一个文件
+     新一组卡 → use_figma: `figma.createPage()` 建新 page（按主题命名，如 "Dowsure-Swiss · <文章>"）→ `setCurrentPageAsync` 切过去
+     # Editorial 与 Swiss 各自建 page 归档，互不干扰；fileKey 永远是上面这个，不随主题/明暗变。
 5. use_figma: 建命名帧              # 名字 "01 · …" … "NN · …"，1080×1440，白底填充，clipsContent
 6. upload_assets ×13 (nodeId 逐帧)  # 拿 submitUrl → curl POST bg/<id>.png（multipart file 字段）
 7. use_figma ×4: 注入 text-chunk    # Read 每个 chunk 内容当 code 传入
@@ -70,3 +77,41 @@ l.y = 98;
 帧名 `"NN · 标题"`，构建器用 `f.name.slice(0,2)===("0"+i 补零)` 匹配。底图文件名 `xhs-NN-<slug>.png` 与 `POSTERS` 顺序一致。`gen-figma-text.cjs` 的 `ORDER` 必须和 `render.cjs`/`figma-export.cjs` 的 id 顺序完全一致。
 
 完整可跑样例见 `assets/example/`（FDE 13 卡的 `example-deck.html` + `example-layout.json`）。
+
+## 两套模板的 Figma 差异（脚本不变，只是字体表 / 验证重点不同）
+
+管线本身两套通用（脚本从 DOM 抽坐标，风格无关）。差异只在两处：用到的字体 (family,style) 集合不同、Swiss 是首接要重点验证。
+
+### 字体映射（在原有「关键踩坑 · 字体映射」基础上补 Swiss 的 sans 系）
+
+> 原则不变：`figma-export.cjs` 抽出的 `fontFamily` + `fontWeight` + `italic` → 映射到 Figma 的 (family, style)；每个脚本开头 `loadFontAsync` 预加载**用到的全部** (family,style)，漏一个就报错原子回滚。
+
+| 角色 | 字体 | weight/italic | Figma style |
+|---|---|---|---|
+| **Editorial** 标题 / 正文 serif | Noto Serif SC | 500 | `Medium` |
+| | Noto Serif SC | 400 | `Regular` |
+| | Noto Serif SC | **斜体**（pullquote / 金句 / callout） | **`Medium`**（思源宋在 Figma **无斜体** → 退正体，可接受） |
+| | Playfair Display | italic | `Italic` |
+| **Swiss** 标题 / 大字 sans | Noto Sans SC | 300（the larger the lighter 的细字重） | `Light` |
+| | Noto Sans SC | 400 | `Regular` |
+| | Noto Sans SC | 500 | `Medium` |
+| | Noto Sans SC | 700 | `Bold` |
+| **两套** mono（kicker / meta / 页码 / 数字标注） | IBM Plex Mono | 400 / 500 | `Regular` / `Medium` |
+| **Swiss** 英文 / 数字（视模板） | Inter | 300 / 400 / 500 / 700 | `Light` / `Regular` / `Medium` / `Bold` |
+
+- **Swiss 大字常用 300/Light**（越大越细），别漏 `loadFontAsync(("Noto Sans SC","Light"))` 和 `(("Inter","Light"))`。
+- Swiss 玫红块上的反白字：颜色在 `layout.json` 里就是白，正常注入即可，无需特殊处理。
+
+### 文字框 / mixed / 删节点 等通用踩坑
+
+这些**两套完全一致**（已在上面「关键踩坑」列全）：`textAutoResize` 走 `NONE → resize(w,h) → HEIGHT`；带 `parts` 的节点 `fontSize`/`fills` 变 `figma.mixed` 要 try/catch + `setRangeFontSize`/`setRangeFills`；删节点先收集进数组再删；底图重传是替换不是叠加；**收尾竖条不烤底图**（`figma-export.cjs` 注入 `.closing-line{border-left:0}`，Figma 里用独立 `createRectangle` 3px 玫红 / 同 x88 / 同 y / 高=文字高，跨卡对齐）；`upload_assets` 的 `submitUrl` **10 分钟过期**，拿齐尽快 `curl -F "file=@bg/<id>.png"` POST。
+
+### ★ Swiss 首接验证清单（第一组 Swiss 卡必跑）
+
+Editorial 已过 FDE 13 卡，可靠；Swiss 是新接，首组逐帧抽检以下点，全过后即同等可靠：
+
+1. **文字定位**：每帧 `node.screenshot({scale:0.4})` 内联返回，肉眼比对 PNG —— Swiss 块面密、对齐严，重点看玫红块 / 发丝线旁的文字有没有错位、有没有压线。
+2. **细字重**：300/Light 的大标题有没有正确加载（漏加载会 fallback 成 Regular 变粗，一眼能看出）。
+3. **玫红块反白字**：`--accent-on:#fff` 的白字在玫红块上是否注入正确（别变黑字）。
+4. **logo**：黑底版 `dowsure-swiss-dark` 上 logo（玫红盾 + 黑字标）的黑字标会"消失"在黑底里 —— 确认 SVG 在暗底卡是否需要换浅色字标版本（首组发现就记下来，沉淀成暗底专用 logo 资产）。
+5. **页码 / 收尾竖条**：与 Editorial 同规格，确认 `NN / 总数` 全卡一致、竖条是独立矢量条没烤底图。
